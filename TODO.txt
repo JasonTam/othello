@@ -1,5 +1,7 @@
 --------------
 
+qq previous move for aiMove needs to be fixed
+
 
 
 ----------------
