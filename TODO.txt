@@ -1,0 +1,122 @@
+--------------
+
+
+
+----------------
+
+Make sure that
+if there are no legal moves, the minimax perspective doesn't screw up
+CHECK FOR NO LEGAL MOVES
+
+have to do max-->max
+or min-->min
+
+
+---------------
+
+Make sure to check for the correct changes to the pseudo class discussed in class
+
+PASS TIME INTO THE FUNCT
+
+
+
+[DONE]------------------------
+Change the cell structure into just an array
+
+the rays can range from size
+7
+to
+2
+1 - no flips
+0 - no flips
+
+
+
+
+
+[DONE]-------------------
+Instead of checking the validity of the every square,
+check only the boundaries of the tokens already played
+
+b = board of tokens thus far
+
+se = strel('square',3);
+q = imdilate(b,se);
+
+m = moves to test
+
+m = q - abs(b)
+
+
+
+
+------------------------
+
+so do IDS on the minimax decision
+continue to next depth only if the last one took less than half the time???
+
+
+---
+prompt for time
+---tic toc
+
+------------
+newRays / rayFlip takes quite some time
+
+--------------
+
+HEURISTIC
+
+Counting the number of moves gives you a measure of immediate mobility; everything else being equal, situations when you can make a move that opens up more other moves should be favored. You need to measure the potential mobility as well - the number of opponent's disks next to an open space.
+X squares - B2, B7, G2, and G7. Placing your disk there early almost certainly gives away the adjacent corner, so your heuristic should give them high negative weight, at least in the first 40 moves
+C squares - A2, A7, B1, G1, H2, H7, B8, and G8. They offer the opponent access to corners, so their value should be different from that of other squares, at least when the edge has fewer than five disks
+
+
+
+------------
+http://kartikkukreja.wordpress.com/2013/03/30/heuristic-function-for-reversiothello/
+
+1::: Parity
+Coin Parity Heuristic Value =
+	100 * (Max Player Coins - Min Player Coins ) / (Max Player Coins + Min Player Coins)
+
+2:::Mobility
+	if ( Max Player Moves + Min Player Moves != 0)
+	Mobility Heuristic Value =
+		100 * (Max Player Moves - Min Player Moves) / (Max Player Moves + Min Player Moves)
+else
+	Mobility Heuristic Value = 0
+
+3:::Corners
+if ( Max Player Corners + Min Player Corners != 0)
+	Corner Heuristic Value =
+		100 * (Max Player Corners - Min Player Corners) / (Max Player Corners + Min Player Corners)
+else
+	Corner Heuristic Value = 0
+	
+	
+4::: Stability
+
+if ( Max Player Stability Value + Min Player Stability Value != 0)
+	Stability  Heuristic Value =
+		100 * (Max Player Stability Value - Min Player Stability Value) / (Max Player Stability Value + Min Player Stability Value)
+else
+	Stability Heuristic Value = 0
+
+
+---------------------
+
+When going back, to review the game
+Maybe analyze the differce in heuristic between
+the human's move and what would have been the computer's move
+
+
+--------------------
+
+When going back to an older game state
+need to change to the appropriate token
+and change the move message
+
+
+
+
