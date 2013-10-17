@@ -49,7 +49,7 @@ static int bdryNE(int m, int n, int off){return (m-off>=0)&&(n+off<L);}
 static int bdrySW(int m, int n, int off){return (m+off<L)&&(n-off>=0);}
 
 typedef int (*bFnPtr)(int, int, int );
-static bFnPtr bFnPtrArr[N_DIR] = {bdryN,dirIndS,bdryW,bdryE,bdryNW,bdrySE,bdryNE,bdrySW};
+static bFnPtr bFnPtrArr[N_DIR] = {bdryN,bdryS,bdryW,bdryE,bdryNW,bdrySE,bdryNE,bdrySW};
 
 /* Flips peices */
 static int rayFlip( double b[], int m, int n, double tok,
