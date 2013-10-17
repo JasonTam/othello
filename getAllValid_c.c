@@ -100,15 +100,8 @@ static int getAllValid( double	*nb, double *a,
                 
                 if (isValid(b,m,n,tok,potB)>0) { // If it's a valid move
                     a[c] = i+1;     // add the 1 for matlab indexing here
- ////////////////ERROR ON THIS LINE WHEN TREE IS DEEP YO                   
-//                     memcpy(nb+(c++)*L*L,potB,sizeof(potB));
-                    memcpy((void *)nb+(c)*L*L*sizeof(double),(const void *)potB,L*L*sizeof(double));
-                    // Workaround
-//                     for (int tm=0;tm<L;tm++)
-//                         for (int tn=0;tn<L;tn++)
-//                             nb[tm+L*(tn+L*c)] = potB[tm+L*tn];
-
-                    c++;
+                    // Copy over potential board to a slice of output
+                    memcpy((void *)nb+(c++)*L*L*sizeof(double),(const void *)potB,L*L*sizeof(double));
                 }
             }
         }
@@ -172,10 +165,7 @@ void mexFunction( int nlhs, mxArray *plhs[],    /* Input Vars */
     }
 
     /* Cleanup */
-//     mxDestroyArray(temp_nb_ptr);
-//     mxDestroyArray(temp_buf_ptr);
-//     mxDestroyArray(temp_a_ptr);
-    
+//     mxDestroyArray(temp);
     
     return;
     
