@@ -1,0 +1,43 @@
+function [ action ] = minimax( state, limit )
+%MINIMAX Summary of this function goes here
+%   Detailed explanation goes here
+
+    % c = candies(node);
+    i = 1:numel(c);
+    vals = zero([1, numel(c)]);
+    for ii = i
+        vals(ii) = minval(c,limit);
+    end
+
+end
+
+%% MAXVALUE
+function v = maxValue(state,limit)
+
+    if isTerminal(state)
+        v = utility(state);
+    elseif (limit==0)   % cutoff
+        v = NaN;
+    else
+        v = -Inf;
+    %     candies = find children (node)
+        for c = candies
+            v = max([v minValue(c,limit-1)]);
+        end
+    end
+end
+%% MINVALUE
+function v = minValue(node,limit)
+
+    if isTerminal(node)
+        v = utility(node);
+    elseif (limit==0)   % cutoff
+        v = NaN;
+    else
+        v = +Inf;
+    %     candies = find children (node)
+        for c = candies
+            v = max([v minValue(c,limit-1)]);
+        end
+    end
+end

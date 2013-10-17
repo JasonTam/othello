@@ -1,0 +1,50 @@
+function [ action ] = minimaxDecision( curBoard, curTok, limit )
+%MINIMAX Summary of this function goes here
+%   Detailed explanation goes here
+%     c: children boards
+
+% %  TODO:: pass only the action rather than the entire boards
+
+    [ c, ~] = getAllValid( curBoard, curTok );
+    
+    i = 1:numel(c);
+    vals = zero([1, numel(c)]);
+    for ii = i
+        vals(ii) = minValue(c(ii),-curTok,limit-1);
+    end
+    action = c(min)
+    
+end
+
+
+% % % % % % COuld probably do something clever with anonymous functs here
+%% MAXVALUE
+function v = maxValue(board,tok,limit)
+
+    if isTerminal(board,tok) % Could combine isTerminal with getting children
+        v = utility(board);
+    elseif (limit==0)   % cutoff
+        v = NaN;
+    else
+        v = -Inf;
+        [ c, ~] = getAllValid( board, tok );
+        for c = c
+            v = max([v minValue(c,-tok,limit-1)]);
+        end
+    end
+end
+%% MINVALUE
+function v = minValue(board,tok,limit)
+
+    if isTerminal(board,tok)
+        v = utility(board);
+    elseif (limit==0)   % cutoff
+        v = NaN;
+    else
+        v = +Inf;
+        [ c, ~] = getAllValid( board, tok );
+        for c = c
+            v = min([v maxValue(c,-tok,limit-1)]);
+        end
+    end
+end
