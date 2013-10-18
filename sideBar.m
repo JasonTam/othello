@@ -1,4 +1,4 @@
-% % % % % SIDEBAR
+%% [SIDEBAR]
 function sB = sideBar(h)
 
     parent = h.fig;
@@ -25,9 +25,27 @@ function sB = sideBar(h)
             uigetfile({'*.txt';'*.*'},'Choose Board');
         if ~(filename); return; end;
         h = guidata(h.fig); % Get GUI data.
-        h.B(:,:,h.iter) = importBoard(strcat(pathname,filename));
-% % % % % % TODO: should count the # of tokens o the board to determine iter 
-%             Should probably find out who pTok is now
+        [B, h.turn, h.aiTime] = ...
+            importBoard(strcat(pathname,filename));
+        h.iter = sum(abs(B(:)))-3;
+        h.B(:,:,h.iter) = B;
+        pB = B; pB(pB==-1)=2;
+        if (h.turn==-1);set(h.indicator,'String','Black''s Move');set(h.indicator,'Color',[0 0 0]);end
+        if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
+        
+        % Print updates
+        fprintf(']]New Game Board Loaded:\n');
+        fprintf(repmat(strcat(repmat('%d ',[1 8]),'\n'),[1 8]),pB);
+        fprintf(']]Iter: %d\n',h.iter);
+        if (h.turn==-1);fprintf(']]Turn: Black\n');end;
+        if (h.turn==1);fprintf(']]Turn: White\n');end;
+        fprintf(']]AI Time: %d sec\n',h.aiTime);
+              
+        % Update sidebar
+        set(sB.eth_iter,'String',num2str(h.iter));
+        set(sB.sh,'Value',h.iter);
+        set(sB.eth_ait,'String',num2str(h.aiTime));
+        
         [~, actions] = getAllValid( h.B(:,:,h.iter), h.turn );
         drawGrid(h);    % Clear the previous higlighted moved
         drawValids(h,actions);
@@ -47,7 +65,7 @@ function sB = sideBar(h)
 
 % % Edit text box AI Time Limit
     sB.etl = text(1.06,0.28,'AI Time','FontSize',14);
-    sB.eth = uicontrol('Parent', parent,...
+    sB.eth_ait = uicontrol('Parent', parent,...
         'Style','edit',...
         'String', h.aiTime,...
         'Units','Normalized',...
@@ -81,7 +99,7 @@ function sB = sideBar(h)
         'Callback',@slider_callback);
 % % Edit text box iter
     sB.etl = text(1.06,0.18,'Iteration #','FontSize',14);
-    sB.eth = uicontrol('Parent', parent,...
+    sB.eth_iter = uicontrol('Parent', parent,...
         'Style','edit',...
         'String',num2str(get(sB.sh,'Value')),...
         'Units','Normalized',...
@@ -94,16 +112,18 @@ function sB = sideBar(h)
         function slider_callback(hObject,eventdata)
             h = guidata(h.fig); % Get GUI data.
             slider.val = round(get(hObject,'Value'));
-            set(sB.eth,'String',num2str(slider.val));
+            set(sB.eth_iter,'String',num2str(slider.val));
             old_iter = h.iter;
             h.iter = slider.val;
             
             d_iter = h.iter - old_iter;
             h.turn = (-1)^(mod(d_iter,2))*h.turn;
+            if (h.turn==-1);set(h.indicator,'String','Black''s Move');set(h.indicator,'Color',[0 0 0]);end
+            if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
 
-%             [validMoves, candy] = getAllValid( h.B(:,:,h.iter), pTok );
+            % Show valid moves for that player's turn
             [~, actions] = getAllValid( h.B(:,:,h.iter), h.turn );
-            drawGrid(h);    % Clear the previous higlighted moved
+            drawGrid(h);    % Clear the previous highlighted moved
             drawValids(h,actions);
             drawBoard(h,h.B(:,:,h.iter));
 
@@ -135,7 +155,10 @@ function sB = sideBar(h)
             h.iter = slider.val;
             d_iter = h.iter - old_iter;
             h.turn = (-1)^(mod(d_iter,2))*h.turn;
-%             [validMoves, candy] = getAllValid( h.B(:,:,h.iter), pTok );
+            if (h.turn==-1);set(h.indicator,'String','Black''s Move');set(h.indicator,'Color',[0 0 0]);end
+            if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
+
+            % Show valid moves for that player's turn
             [~, actions] = getAllValid( h.B(:,:,h.iter), h.turn );
             drawGrid(h);    % Clear the previous higlighted moved
             drawValids(h,actions);

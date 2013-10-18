@@ -173,7 +173,7 @@ end
 
 % Update Sidebar
 function updateSide(sB, iter)
-    set(sB.eth,'String',num2str(iter));
+    set(sB.eth_iter,'String',num2str(iter));
     set(sB.sh,'Value',iter);
 end
 
