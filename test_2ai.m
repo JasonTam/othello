@@ -33,7 +33,7 @@ toc
 %%
 tic
 for i = 1:10000
-    b = randi([-1 1],8)
+    b = randi([-1 1],8);
     getAllValid_c(b,tok);
 end
 toc

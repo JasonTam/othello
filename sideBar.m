@@ -40,8 +40,7 @@ function sB = sideBar(h)
             uiputfile({'*.txt';'*.*'},'Choose Board');
         if ~(filename); return; end;
         h = guidata(h.fig); % Get GUI data.
-        B = h.B(:,:,h.iter);
-        exportBoard(B, strcat(pathname,filename));
+        exportBoard(h, strcat(pathname,filename));
     end
 
 %% Set AI Time Limit

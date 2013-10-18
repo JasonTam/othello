@@ -77,10 +77,10 @@ cTok = -pTok;
 %         fprintf('Outside iter = %d \n',h.iter)
         updateSide(sideh, h.iter);
         
-% % % [HUMAN MOVE]
+%% [HUMAN MOVE]
         if (h.turn == pTok) % && there are valid moves for black
             set(h.indicator,'String','Black''s Move');
-            set(h.indicator,'Color',[0 0 0 ]);
+            set(h.indicator,'Color',[0 0 0]);
 
             [~, actions] = getAllValid( h.B(:,:,h.iter), pTok );
             if isempty(actions)
@@ -90,23 +90,21 @@ cTok = -pTok;
             end
             drawValids(h,actions);
 
-    %         Have the player decide on a move to make
+            % Have the player decide on a move to make
             try
                 newB = [];
                 while (isempty(newB))
                     guidata(h.fig,h);
-%                     Game pauses here to get player input
+                    % Game pauses here to get player input
                     pCoord = getPMoveCoord(h);
-% Need to update incase sidebar was used
-                    h = guidata(h.fig);
+                    h = guidata(h.fig);     % Udate incase sidebar was used
                     newB = isValidMove2(h.B(:,:,h.iter),pCoord,pTok);
                     if (isempty(newB))
                         set(h.status,'String','Not a valid move');
                     end
                 end    
 
-            catch exception
-    %             Catching user closing the figure via [X] button
+            catch exception     % User force quit [X]
                 disp('User exited')
                 disp(exception.message)
                 return
@@ -114,7 +112,7 @@ cTok = -pTok;
             h.B(:,:,h.iter+1) = newB;
             guidata(h.fig,h);
             drawGrid(h) % Need this if we highlight valid moves for the player
-% % % [AI MOVE]
+%% [AI MOVE]
         elseif (h.turn == cTok)
             set(h.indicator,'String','White''s Move');
             set(h.indicator,'Color',[1 1 1]);
@@ -125,12 +123,10 @@ cTok = -pTok;
                 h.iter = h.iter - 1;
                 break 
             end
-%             t_start = tic;
-            tic % Note that tic is global
+            tic     % Note that tic is global
             h.B(:,:,h.iter+1) = aiMove(h.B(:,:,h.iter), h.aiTime, cTok);
             toc
             guidata(h.fig,h);
-            toc
         end
         
         h.iter = h.iter+1;
@@ -148,6 +144,7 @@ cTok = -pTok;
     
     
     %% NESTED FUNCTIONS
+    % Update the Score
     function updateScore
         board = h.B(:,:,h.iter);
         wS = sum(board(:)>0);
@@ -160,12 +157,13 @@ cTok = -pTok;
 end
 
 
-% % % % % % % % % % % % % %  MORE FUNCTIONS
+%% MORE FUNCTIONS
 
+% User Click Input
 function clkCoord = getPMoveCoord(h)
     clkCoord = ceil(ginput(1)*h.n);     % [row, col]
-% x = clkCoord(1);
-% y = clkCoord(2);
+    % x = clkCoord(1);
+    % y = clkCoord(2);
     while max(clkCoord)>h.n
         set(h.status,'String','Click on the board');
         clkCoord = ceil(ginput(1)*h.n); % [row, col]
@@ -173,6 +171,7 @@ function clkCoord = getPMoveCoord(h)
     set(h.status,'String','');
 end
 
+% Update Sidebar
 function updateSide(sB, iter)
     set(sB.eth,'String',num2str(iter));
     set(sB.sh,'Value',iter);
