@@ -166,8 +166,8 @@ function sB = sideBar(h)
 end
 
 function updateMsg(h)
-            if (h.turn==-1);set(h.indicator,'String','Black''s Move');set(h.indicator,'Color',[0 0 0]);end
-            if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
-            if (h.turn==h.cTok);set(h.status,'String','Click anywhere to let the AI make it''s move.');end
+    if (h.turn==-1);set(h.indicator,'String','Black''s Move');set(h.indicator,'Color',[0 0 0]);end
+    if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
+    if (h.turn==h.cTok);set(h.status,'String','Click anywhere to let the AI make it''s move.');end
 end
 

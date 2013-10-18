@@ -178,6 +178,7 @@ function clkCoord = getPMoveCoord(h)
         h = guidata(h.fig);     % Udate incase sidebar was used
         set(h.status,'String','Click on the board');
         clkCoord = ceil(ginput(1)*h.n); % [row, col]
+        h = guidata(h.fig);     % Udate incase sidebar was used
     end
     set(h.status,'String','');
     % If a different game was loaded while waiting for input
