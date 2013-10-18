@@ -80,8 +80,9 @@ h.cTok = -h.pTok;
         
 %% [HUMAN MOVE]
         if (h.turn == h.pTok) % && there are valid moves for black
-            set(h.indicator,'String','Black''s Move');
-            set(h.indicator,'Color',[0 0 0]);
+            if (h.turn==-1);set(h.indicator,'String','Black''s Move');set(h.indicator,'Color',[0 0 0]);end
+            if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
+    
 
             [~, actions] = getAllValid( h.B(:,:,h.iter), h.pTok );
             if isempty(actions)
@@ -123,19 +124,22 @@ h.cTok = -h.pTok;
             drawGrid(h) % Need this if we highlight valid moves for the player
 %% [AI MOVE]
         elseif (h.turn == h.cTok)
-            set(h.indicator,'String','White''s Move');
-            set(h.indicator,'Color',[1 1 1]);
+            if (h.turn==-1);set(h.indicator,'String','Black''s Move');set(h.indicator,'Color',[0 0 0]);end
+            if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
+    
             
             [~, actions] = getAllValid( h.B(:,:,h.iter), h.cTok );
             if isempty(actions)
 %                 The turn will swap back to h.pTok later
                 h.iter = h.iter - 1;
-                break 
+%                 break 
+            else
+                tic     % Note that tic is global
+                h.B(:,:,h.iter+1) = aiMove(h.B(:,:,h.iter), h.aiTime, h.cTok);
+                toc
+                guidata(h.fig,h);
             end
-            tic     % Note that tic is global
-            h.B(:,:,h.iter+1) = aiMove(h.B(:,:,h.iter), h.aiTime, h.cTok);
-            toc
-            guidata(h.fig,h);
+            
         end
         
         h.iter = h.iter+1;
@@ -145,8 +149,6 @@ h.cTok = -h.pTok;
         drawBoard(h,h.B(:,:,h.iter));
         drawnow
         updateScore
-        disp(h.iter)
-        disp(h.turn)
     end
     
 %% HANDLE ENDGAME    
