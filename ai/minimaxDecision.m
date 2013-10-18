@@ -50,7 +50,7 @@ end
             nCandy = size(c,3);     % # children for root 
             for i = 1:nCandy
                 v = max([v minValue(c(:,:,i),-tok,alpha,beta,aiTime,limit-1)]);
-                if (v>=beta); return; end
+                if (v>beta); return; end
                 alpha = max(alpha,v);                    
             end
         end
@@ -77,7 +77,7 @@ end
             nCandy = size(c,3);     % # children for root 
             for i = 1:nCandy
                 v = min([v maxValue(c(:,:,i),-tok,alpha,beta,aiTime,limit-1)]);
-                if (v<=alpha); return; end
+                if (v<alpha); return; end
                 beta = min([beta v]);
             end
         end
