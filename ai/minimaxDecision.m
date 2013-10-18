@@ -22,7 +22,7 @@ function [ newB ] = minimaxDecision( curBoard, curTok, aiTime, limit )
     if isnan(v)
         disp('Cutoff was reached')
     else
-        fprintf('Heuristic Val: %f\n',v)
+%         fprintf('Heuristic Val: %f\n',v)
     end
 %     toc
 end

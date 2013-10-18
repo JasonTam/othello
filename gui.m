@@ -63,11 +63,12 @@ function gui
 
 %% Choose Token Color
 % Hard Code
-%     pTok = -1;
-%     cTok = 1;
+%     h.pTok = -1;
+%     h.cTok = 1;
 %     Select
-pTok = promptTokColor;
-cTok = -pTok;
+h.pTok = promptTokColor;
+h.cTok = -h.pTok;
+    guidata(h.fig,h)
     
 %% Begin main game
 
@@ -78,13 +79,13 @@ cTok = -pTok;
         updateSide(sideh, h.iter);
         
 %% [HUMAN MOVE]
-        if (h.turn == pTok) % && there are valid moves for black
+        if (h.turn == h.pTok) % && there are valid moves for black
             set(h.indicator,'String','Black''s Move');
             set(h.indicator,'Color',[0 0 0]);
 
-            [~, actions] = getAllValid( h.B(:,:,h.iter), pTok );
+            [~, actions] = getAllValid( h.B(:,:,h.iter), h.pTok );
             if isempty(actions)
-%                 The turn will swap back to cTok later
+%                 The turn will swap back to h.cTok later
                 h.iter = h.iter - 1;
                 break 
             end
@@ -98,7 +99,15 @@ cTok = -pTok;
                     % Game pauses here to get player input
                     pCoord = getPMoveCoord(h);
                     h = guidata(h.fig);     % Udate incase sidebar was used
-                    newB = isValidMove2(h.B(:,:,h.iter),pCoord,pTok);
+                    if (isnan(pCoord))      % Massive workaround for loading while user input
+                        % Need to pre-emptively negate effects later
+                        newB = h.B(:,:,h.iter);
+                        h.turn = -h.turn;
+                        h.iter = h.iter - 1;
+                        break 
+                    end
+                    newB = isValidMove2(h.B(:,:,h.iter),pCoord,h.pTok);
+
                     if (isempty(newB))
                         set(h.status,'String','Not a valid move');
                     end
@@ -113,18 +122,18 @@ cTok = -pTok;
             guidata(h.fig,h);
             drawGrid(h) % Need this if we highlight valid moves for the player
 %% [AI MOVE]
-        elseif (h.turn == cTok)
+        elseif (h.turn == h.cTok)
             set(h.indicator,'String','White''s Move');
             set(h.indicator,'Color',[1 1 1]);
             
-            [~, actions] = getAllValid( h.B(:,:,h.iter), cTok );
+            [~, actions] = getAllValid( h.B(:,:,h.iter), h.cTok );
             if isempty(actions)
-%                 The turn will swap back to pTok later
+%                 The turn will swap back to h.pTok later
                 h.iter = h.iter - 1;
                 break 
             end
             tic     % Note that tic is global
-            h.B(:,:,h.iter+1) = aiMove(h.B(:,:,h.iter), h.aiTime, cTok);
+            h.B(:,:,h.iter+1) = aiMove(h.B(:,:,h.iter), h.aiTime, h.cTok);
             toc
             guidata(h.fig,h);
         end
@@ -162,13 +171,17 @@ end
 % User Click Input
 function clkCoord = getPMoveCoord(h)
     clkCoord = ceil(ginput(1)*h.n);     % [row, col]
+    h = guidata(h.fig);     % Udate incase sidebar was used
     % x = clkCoord(1);
     % y = clkCoord(2);
-    while max(clkCoord)>h.n
+    while (max(clkCoord)>h.n)&&(h.turn==h.pTok)
+        h = guidata(h.fig);     % Udate incase sidebar was used
         set(h.status,'String','Click on the board');
         clkCoord = ceil(ginput(1)*h.n); % [row, col]
     end
     set(h.status,'String','');
+    % If a different game was loaded while waiting for input
+    if (h.turn~=h.pTok);clkCoord=nan;end;
 end
 
 % Update Sidebar
