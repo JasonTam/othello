@@ -34,7 +34,7 @@ function sB = sideBar(h)
         
         % Print updates
         fprintf(']]New Game Board Loaded:\n');
-        fprintf(repmat(strcat(repmat('%d ',[1 8]),'\n'),[1 8]),pB);
+        fprintf(repmat(strcat(repmat('%d ',[1 8]),'\n'),[1 8]),pB');
         fprintf(']]Iter: %d\n',h.iter);
         if (h.turn==-1);fprintf(']]Turn: Black\n');end;
         if (h.turn==1);fprintf(']]Turn: White\n');end;

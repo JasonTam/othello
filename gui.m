@@ -145,6 +145,8 @@ h.cTok = -h.pTok;
         drawBoard(h,h.B(:,:,h.iter));
         drawnow
         updateScore
+        disp(h.iter)
+        disp(h.turn)
     end
     
 %% HANDLE ENDGAME    
