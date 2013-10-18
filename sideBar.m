@@ -30,9 +30,7 @@ function sB = sideBar(h)
         h.iter = sum(abs(B(:)))-3;
         h.B(:,:,h.iter) = B;
         pB = B; pB(pB==-1)=2;
-        if (h.turn==-1);set(h.indicator,'String','Black''s Move');set(h.indicator,'Color',[0 0 0]);end
-        if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
-        if (h.turn==h.cTok);set(h.status,'String','Click anywhere to let the AI make it''s move.');end
+        updateMsg(h);
         
         % Print updates
         fprintf(']]New Game Board Loaded:\n');
@@ -119,10 +117,8 @@ function sB = sideBar(h)
             
             d_iter = h.iter - old_iter;
             h.turn = (-1)^(mod(d_iter,2))*h.turn;
-            if (h.turn==-1);set(h.indicator,'String','Black''s Move');set(h.indicator,'Color',[0 0 0]);end
-            if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
-            if (h.turn==h.cTok);set(h.status,'String','Click anywhere to let the AI make it''s move.');end
-        
+            updateMsg(h);
+            
             % Show valid moves for that player's turn
             [~, actions] = getAllValid( h.B(:,:,h.iter), h.turn );
             drawGrid(h);    % Clear the previous highlighted moved
@@ -157,10 +153,8 @@ function sB = sideBar(h)
             h.iter = slider.val;
             d_iter = h.iter - old_iter;
             h.turn = (-1)^(mod(d_iter,2))*h.turn;
-            if (h.turn==-1);set(h.indicator,'String','Black''s Move');set(h.indicator,'Color',[0 0 0]);end
-            if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
-            if (h.turn==h.cTok);set(h.status,'String','Click anywhere to let the AI make it''s move.');end
-            
+            updateMsg(h);
+
             % Show valid moves for that player's turn
             [~, actions] = getAllValid( h.B(:,:,h.iter), h.turn );
             drawGrid(h);    % Clear the previous higlighted moved
@@ -169,6 +163,11 @@ function sB = sideBar(h)
 
             guidata(h.fig,h)
         end
+end
 
+function updateMsg(h)
+            if (h.turn==-1);set(h.indicator,'String','Black''s Move');set(h.indicator,'Color',[0 0 0]);end
+            if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
+            if (h.turn==h.cTok);set(h.status,'String','Click anywhere to let the AI make it''s move.');end
 end
 
