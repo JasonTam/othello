@@ -1,4 +1,11 @@
+%%
 
+a  = [ 4 2 5 1 5 6 8 4 2 3 8 3 2 ];
+ind = find(a==max(a)); ind(randi(numel(ind)));
+
+
+
+%%
 b = initBoard;
 coord=[5,3];
 Tok = 1;

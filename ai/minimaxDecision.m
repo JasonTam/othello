@@ -17,10 +17,14 @@ function [ newB ] = minimaxDecision( curBoard, curTok, aiTime, limit )
         if isnan(vals(i)); newB = nan; return; end;
     end
     [v, aInd] = max(vals);
+    % Break ties randomly
+    indC = find(vals==v); aInd = indC(randi(numel(indC)));
+    
     newB = c(:,:,aInd);
     
     if isnan(v)
         disp('Cutoff was reached')
+        % remember to use the best candidate from the previous depth
     else
 %         fprintf('Heuristic Val: %f\n',v)
     end
