@@ -1,4 +1,4 @@
-function [ newB ] = aiMove( b, aiTime, cTok )
+function [ newB ] = aiMove( b, aiTime, cTok, d_max )
 %AIMOVE Summary of this function goes here
 %   Detailed explanation goes here
 %   aiTime = time allowed for AI to make a move
@@ -13,7 +13,9 @@ if 0
 end
 
 %% MiniMax
-d_max = 20;
+if nargin < 4   % go on to depth 20 if no depth limit given
+    d_max = 20;
+end
 
 % Perhaps make a vector to hold the move of each depth
 % incase we want to examine the differences

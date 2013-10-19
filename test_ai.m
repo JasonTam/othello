@@ -25,6 +25,7 @@ b = [0 0 2 2 2 2 2 0
 
 
 b(b==2) = -1;
-aiTime = 0.5;
+aiTime = 20;
 tic
-[ newB ] = aiMove( b, aiTime, cTok );
+[ newB ] = aiMove( b, aiTime, cTok, 7 );
+toc
