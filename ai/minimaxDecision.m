@@ -34,6 +34,7 @@ end
 
 % % % % % % Could probably do something clever with anonymous functs here
 %% MAXVALUE
+% Max's Move
 function v = maxValue(board,tok,alpha,beta,aiTime,limit)
 global t_thresh;
 if (toc>=aiTime-t_thresh)
@@ -47,8 +48,12 @@ end
             v = utility(board);
     else
         [ c, ~] = getAllValid( board, tok );
-        if isempty(c)
-            v = utility(board);
+        if isempty(c)   % Max has no moves
+%             v = utility(board);
+            v = -Inf;
+            v = max([v minValue(board,-tok,alpha,beta,aiTime,limit-1)]);
+            if (v>beta); return; end
+            alpha = max(alpha,v);
         else
             v = -Inf;
             nCandy = size(c,3);     % # children for root 
@@ -61,6 +66,7 @@ end
     end
 end
 %% MINVALUE
+% Min's Move
 function v = minValue(board,tok,alpha,beta,aiTime,limit)
 global t_thresh;
 if (toc>=aiTime-t_thresh)
@@ -74,8 +80,12 @@ end
             v = utility(board);
     else
         [ c, ~] = getAllValid( board, tok );
-        if isempty(c)
-            v = utility(board);
+        if isempty(c)   % Min has no moves
+%             v = utility(board);
+            v = +Inf;
+            v = min([v maxValue(board,-tok,alpha,beta,aiTime,limit-1)]);
+            if (v<alpha); return; end
+            beta = min([beta v]);
         else
             v = +Inf;
             nCandy = size(c,3);     % # children for root 
