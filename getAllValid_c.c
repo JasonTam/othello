@@ -95,13 +95,18 @@ static int getAllValid( double	*nb, double *a,
         for ( m = 0; m < L; m++) {
             i = m+L*n;
             if (b[i]==0) {          // Only analyze for empty spots
-                // Copy potB = b (potB will be modified)
-                memcpy((void *)potB,(const void *)b,L*L*sizeof(double));             
-                
-                if (isValid(b,m,n,tok,potB)>0) { // If it's a valid move
-                    a[c] = i+1;     // add the 1 for matlab indexing here
-                    // Copy over potential board to a slice of output
-                    memcpy((void *)nb+(c++)*L*L*sizeof(double),(const void *)potB,L*L*sizeof(double));
+                int dila = 0;
+                for (int di=0; di<N_DIR; di++)
+                    dila += (b[dirFnPtrArr[di](m,n,1)]==(-tok))&&bFnPtrArr[di](m,n,1);
+                if (dila) {     // Only analyze for spots touching enemies
+                    // Copy potB = b (potB will be modified)
+                    memcpy((void *)potB,(const void *)b,L*L*sizeof(double));             
+
+                    if (isValid(b,m,n,tok,potB)>0) { // If it's a valid move
+                        a[c] = i+1;     // add the 1 for matlab indexing here
+                        // Copy over potential board to a slice of output
+                        memcpy((void *)nb+(c++)*L*L*sizeof(double),(const void *)potB,L*L*sizeof(double));
+                    }
                 }
             }
         }

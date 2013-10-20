@@ -1,8 +1,10 @@
-------------------
+---------------
+Make sure that minimax considers when the game ends due to
+both plays having no moves
+
+
+-[DONE]-----------------
 end game if neither player has moves to make
-
-
-
 
 
 --------------
@@ -22,11 +24,9 @@ CHECK FOR NO LEGAL MOVES
 
 have to do max-->max
 or min-->min
-
-
----------------
-
+-----------------
 Make sure to check for the correct changes to the pseudo class discussed in class
+-[Done]--------------
 
 PASS TIME INTO THE FUNCT
 
