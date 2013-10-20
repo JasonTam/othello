@@ -25,8 +25,14 @@ function sB = sideBar(h)
             uigetfile({'*.txt';'*.*'},'Choose Board');
         if ~(filename); return; end;
         h = guidata(h.fig); % Get GUI data.
-        [B, h.turn, h.aiTime] = ...
-            importBoard(strcat(pathname,filename));
+        try
+            [B, h.turn, h.aiTime] = ...
+                importBoard(strcat(pathname,filename));
+        catch exception
+           disp('Invalid Board');
+           disp(exception.message);
+           return;
+        end
         h.iter = sum(abs(B(:)))-3;
         h.B(:,:,h.iter) = B;
         pB = B; pB(pB==-1)=2;

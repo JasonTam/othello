@@ -1,3 +1,10 @@
+------------------
+end game if neither player has moves to make
+
+
+
+
+
 --------------
 
 if theres only one move, take it
