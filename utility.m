@@ -2,6 +2,7 @@ function [ utilScore ] = utility( board )
 %UTILITY Summary of this function goes here
 %   Calculates the heuristic of the current state
 
+n= 8;
 if nargin<2
     type = 2;
 end
@@ -19,12 +20,11 @@ type = 2;
             h_par = sum(board(:))/sum(abs(board(:)));
             
             % Mobility
-%             [ ~, aMax] = getAllValid( board, 1 );
-%             [ ~, aMin] = getAllValid( board, -1 );
-%             h_mob = (numel(aMax)-numel(aMin))/(numel(aMax)+numel(aMin));
-            h_mob = 0;
+            [ ~, aMax] = getAllValid( board, 1 );
+            [ ~, aMin] = getAllValid( board, -1 );
+            h_mob = (numel(aMax)-numel(aMin))/(numel(aMax)+numel(aMin));
+%             h_mob = 0;
             % Corners
-            n = size(board,1);
             corners = board([1 n],[1 n]);
             h_cor = sum(corners(:))/sum(abs(corners(:)));
             h_cor(isnan(h_cor)) = 0;

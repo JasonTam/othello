@@ -26,8 +26,9 @@ for d = 1:d_max     % Iterative Deepening
     if isnan(newB)
         newB = qq;
         return;     % return result
+    else
+        fprintf('Depth Complete: %d\n',d)
     end
-    fprintf('Depth Complete: %d\n',d)
 end  
 
 
