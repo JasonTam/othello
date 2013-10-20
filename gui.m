@@ -71,8 +71,8 @@ h.cTok = -h.pTok;
     guidata(h.fig,h)
     
 %% Begin main game
-
-    while ~all(all(h.B(:,:,h.iter)))
+hasMoves = 2;
+    while (~all(all(h.B(:,:,h.iter))))&&(hasMoves)
         h = guidata(h.fig);
         
 %         fprintf('Outside iter = %d \n',h.iter)
@@ -88,8 +88,10 @@ h.cTok = -h.pTok;
             if isempty(actions)
 %                 The turn will swap back to h.cTok later
                 h.iter = h.iter - 1;
+                hasMoves = hasMoves - 1;
 %                 break 
             else
+                hasMoves = 2;
                 drawValids(h,actions);
 
                 % Have the player decide on a move to make
@@ -133,8 +135,10 @@ h.cTok = -h.pTok;
             if isempty(actions)
 %                 The turn will swap back to h.pTok later
                 h.iter = h.iter - 1;
+                hasMoves = hasMoves - 1;
 %                 break 
             else
+                hasMoves = 2;
                 tic     % Note that tic is global
                 h.B(:,:,h.iter+1) = aiMove(h.B(:,:,h.iter), h.aiTime, h.cTok);
                 toc
