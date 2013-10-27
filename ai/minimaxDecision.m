@@ -5,7 +5,7 @@ function [ newB ] = minimaxDecision( curBoard, curTok, aiTime, limit )
 %       with alpha beta pruning
 
 % %  TODO:: pass only the action rather than the entire boards
-    global t_thresh; t_thresh = 0.05;
+    global t_thresh; t_thresh = aiTime/40+0.02;
     alpha = -Inf;
     beta = +Inf;
 
@@ -43,7 +43,7 @@ end
 function v = maxValue(board,tok,alpha,beta,aiTime,limit)
 global t_thresh;
 if (toc>=aiTime-t_thresh)
-    fprintf('Partial Depth: %d\n',limit);
+%     fprintf('Partial Depth: %d\n',limit);
     v = nan;
     return;
 end
@@ -75,7 +75,7 @@ end
 function v = minValue(board,tok,alpha,beta,aiTime,limit)
 global t_thresh;
 if (toc>=aiTime-t_thresh)
-    fprintf('Partial Depth: %d\n',limit);
+%     fprintf('Partial Depth: %d\n',limit);
     v = nan;
     return;
 end
