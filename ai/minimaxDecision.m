@@ -11,24 +11,29 @@ function [ newB ] = minimaxDecision( curBoard, curTok, aiTime, limit )
 
     [ c, ~] = getAllValid( curBoard, curTok );
     nCandy = size(c,3);     % # children for root
-    vals = zeros([1, nCandy]);
-    for i = 1:nCandy;
-        vals(i) = minValue(c(:,:,i),-curTok,alpha,beta, aiTime, limit-1);
-        if isnan(vals(i)); newB = nan; return; end;
+    if (nCandy>1)
+        vals = zeros([1, nCandy]);
+        for i = 1:nCandy;
+            vals(i) = minValue(c(:,:,i),-curTok,alpha,beta, aiTime, limit-1);
+            if isnan(vals(i)); newB = nan; return; end;
+        end
+        [v, aInd] = max(vals);
+        % Break ties randomly
+        indC = find(vals==v); aInd = indC(randi(numel(indC)));
+
+        newB = c(:,:,aInd);
+
+        if isnan(v)
+            disp('Cutoff was reached')
+            % remember to use the best candidate from the previous depth
+        else
+    %         fprintf('Heuristic Val: %f\n',v)
+        end
+        
+    else%if (nCandy==1)
+        % If there's only one move, take it
+        newB = c(:,:,1);
     end
-    [v, aInd] = max(vals);
-    % Break ties randomly
-    indC = find(vals==v); aInd = indC(randi(numel(indC)));
-    
-    newB = c(:,:,aInd);
-    
-    if isnan(v)
-        disp('Cutoff was reached')
-        % remember to use the best candidate from the previous depth
-    else
-%         fprintf('Heuristic Val: %f\n',v)
-    end
-%     toc
 end
 
 
