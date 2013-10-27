@@ -34,7 +34,7 @@ type = 2;
             
             % Weights
             w_p = 10;
-            w_m = 80;
+            w_m = 50;
             w_c = 800;
             w_s = 200;
             w = [w_p;w_m;w_c;w_s];

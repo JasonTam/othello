@@ -6,11 +6,11 @@ function [ newB ] = aiMove( b, aiTime, cTok, d_max )
 %% TODO:: THE QQ PREV VALUE THING IS MESSED UP 
 
 %% Random Move AI
-if 0
-    [validMoves, candy] = getAllValid(b,cTok);
-    choice = randi(numel(candy));
-    newB = validMoves(:,:,choice);
-end
+% Use this incase of a an initial fallback required
+[validMoves, candy] = getAllValid(b,cTok);
+choice = randi(numel(candy));
+fallBack = validMoves(:,:,choice);
+
 
 %% MiniMax
 if nargin < 4   % go on to depth 20 if no depth limit given
@@ -20,11 +20,11 @@ end
 % Perhaps make a vector to hold the move of each depth
 % incase we want to examine the differences
 for d = 1:d_max     % Iterative Deepening
-    if exist('newB','var'); qq = newB; end     % Previous value
+    if exist('newB','var'); fallBack = newB; end     % Previous value
     newB = minimaxDecision(b,cTok,aiTime,d);
     toc
     if isnan(newB)
-        newB = qq;
+        newB = fallBack;
         return;     % return result
     else
         fprintf('Depth Complete: %d\n',d)
