@@ -7,9 +7,11 @@ ind = find(a==max(a)); ind(randi(numel(ind)));
 
 b = int32(initBoard);
 Tok = int32(1);
+tic
 for i = 1:10000
-    [a b] = getAllValidint_c(b,Tok);
+    [q, w] = getAllValidint_c(b,Tok);
 end
+toc
 %%
 b = initBoard;
 coord=[5,3];
@@ -29,7 +31,7 @@ for i = 1:10000
 % m = q - abs(b);
 
 % isValidMove2(b,coord,Tok);
-[a b] = getAllValidint_c(b,Tok);
+[q,w] = getAllValid_c(b,Tok);
 
 
 % 
