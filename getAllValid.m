@@ -7,8 +7,9 @@ function [ nextBoards, actions] = getAllValid( b, tok )
 mode = 'c';
 
 if strcmp(mode,'c')
-    [nextBoards, actions] = getAllValid_c(b, tok );
-    
+%     [nextBoards, actions] = getAllValid_c(b, tok );
+    [nextBoards, actions] = getAllValidint_c(int32(b), int32(tok) );
+    nextBoards = double(nextBoards); actions = double(actions);
 elseif strcmp(mode,'matlab')
     n = size(b,1);
 

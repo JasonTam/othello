@@ -12,6 +12,16 @@ for i = 1:10000
     [q, w] = getAllValidint_c(b,Tok);
 end
 toc
+
+%%
+
+b = int8(initBoard);
+Tok = int8(1);
+tic
+for i = 1:10000
+    [q, w] = getAllValidchar_c(b,Tok);
+end
+toc
 %%
 b = initBoard;
 coord=[5,3];
