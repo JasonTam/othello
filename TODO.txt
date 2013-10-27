@@ -1,3 +1,11 @@
+--------[optional]-----
+can convert b and tok to char or int32
+before putting into getAllValidint_c
+
+
+
+
+
 ---------------
 Make sure that minimax considers when the game ends due to
 both plays having no moves
