@@ -1,4 +1,4 @@
-function [ utilScore ] = utility( board )
+function [ utilScore ] = utility( board, tok )
 %UTILITY Summary of this function goes here
 %   Calculates the heuristic of the current state
 
@@ -15,13 +15,17 @@ type = 2;
         case 1
             utilScore = sum(board(:));
         case 2
+
+            % Calculate the iter # of board
+            % Could pass in, but lazy
+            iter = sum(abs(board(:)));
             
             % Parity
-            h_par = sum(board(:))/sum(abs(board(:)));
+            h_par = sum(board(:))/iter;
             
             % Mobility
-            [ ~, aMax] = getAllValid( board, 1 );
-            [ ~, aMin] = getAllValid( board, -1 );
+            [ ~, aMax] = getAllValid( board, tok );
+            [ ~, aMin] = getAllValid( board, -tok );
             h_mob = (numel(aMax)-numel(aMin))/(numel(aMax)+numel(aMin));
 %             h_mob = 0;
             % Corners
@@ -33,7 +37,7 @@ type = 2;
             h_s = 0;
             
             % Weights
-            w_p = 10;
+            w_p = 10+50*((n*n-iter)<3);     % Scale parity near end of game
             w_m = 50;
             w_c = 800;
             w_s = 200;

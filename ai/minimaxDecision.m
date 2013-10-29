@@ -50,7 +50,7 @@ end
 
 % Decision tree to avoid extra calculations
     if (limit==0) || all(board(:))
-            v = utility(board);
+            v = utility(board,tok);
     else
         [ c, ~] = getAllValid( board, tok );
         if isempty(c)   % Max has no moves
@@ -82,7 +82,7 @@ end
 
 % Decision tree to avoid extra calculations
     if (limit==0) || all(board(:))
-            v = utility(board);
+            v = utility(board,tok);
     else
         [ c, ~] = getAllValid( board, tok );
         if isempty(c)   % Min has no moves

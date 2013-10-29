@@ -5,6 +5,26 @@ ind = find(a==max(a)); ind(randi(numel(ind)));
 
 %%
 
+b = [0 1 1 1 1 1 0 0
+1 1 0 0 0 0 0 0
+1 0 0 0 0 0 1 0
+1 0 0 1 0 1 0 0
+1 0 0 0 1 0 0 0
+1 0 0 2 0 1 0 0
+0 0 2 0 0 0 1 0
+0 2 0 0 0 2 0 2];
+b(b==2) = -1;
+
+tic
+for i = 1:10000
+    utility(b);
+end
+toc
+
+
+
+
+%%
 b = int32(initBoard);
 Tok = int32(1);
 tic
