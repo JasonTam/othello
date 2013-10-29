@@ -6,6 +6,7 @@ function [ newB ] = minimaxDecision( curBoard, curTok, aiTime, limit )
 
 % %  TODO:: pass only the action rather than the entire boards
     global t_thresh; t_thresh = aiTime/40+0.02;
+    global cTok; cTok = curTok;
     alpha = -Inf;
     beta = +Inf;
 
@@ -42,6 +43,7 @@ end
 % Max's Move
 function v = maxValue(board,tok,alpha,beta,aiTime,limit)
 global t_thresh;
+global cTok;
 if (toc>=aiTime-t_thresh)
 %     fprintf('Partial Depth: %d\n',limit);
     v = nan;
@@ -50,7 +52,7 @@ end
 
 % Decision tree to avoid extra calculations
     if (limit==0) || all(board(:))
-            v = utility(board,tok);
+            v = utility(board,cTok);
     else
         [ c, ~] = getAllValid( board, tok );
         if isempty(c)   % Max has no moves
@@ -74,6 +76,7 @@ end
 % Min's Move
 function v = minValue(board,tok,alpha,beta,aiTime,limit)
 global t_thresh;
+global cTok;
 if (toc>=aiTime-t_thresh)
 %     fprintf('Partial Depth: %d\n',limit);
     v = nan;
@@ -82,7 +85,7 @@ end
 
 % Decision tree to avoid extra calculations
     if (limit==0) || all(board(:))
-            v = utility(board,tok);
+            v = utility(board,cTok);
     else
         [ c, ~] = getAllValid( board, tok );
         if isempty(c)   % Min has no moves
