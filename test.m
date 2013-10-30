@@ -17,7 +17,7 @@ b(b==2) = -1;
 
 tic
 for i = 1:10000
-    utility(b);
+    utility(b,1);
 end
 toc
 
