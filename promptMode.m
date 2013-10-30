@@ -1,5 +1,5 @@
 function [ mode ] = promptMode(  )
-%PROMPTTOKCOLOR Summary of this function goes here
+%PROMPTMODE Summary of this function goes here
 %   Detailed explanation goes here
     
 choice = questdlg('', ...
