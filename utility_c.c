@@ -62,7 +62,7 @@ static double utility( const mxArray*prhs[]) {
     mexCallMATLAB(2, lhs_gAV, 2, rhs_temp, "getAllValid_c");
     int aMin = mxGetM(lhs_gAV[1]);
     //     mxDestroyArray(rhs_temp);
-    h_mob = (aMax-aMin)/(aMax+aMin);
+    h_mob = ((double)aMax-aMin)/(aMax+aMin);
     
     // Corners
     int corners[4];
@@ -93,11 +93,17 @@ static double utility( const mxArray*prhs[]) {
     w[1] = 50;
     w[2] = 800;
     
-    
     // Calculate Total Score (Dot prod)
     score = w[0]*h_par+
             w[1]*h_mob+
             w[2]*h_cor;
+    
+//     mexPrintf("h_par: %f \n",h_par);
+//     mexPrintf("h_mob: %f \n",h_mob);
+//     mexPrintf("h_cor: %f \n",h_cor);
+//     mexPrintf("w[0]: %d \n",w[0]);
+//     mexPrintf("score: %f \n",score);
+    
     return score;
 }
 
