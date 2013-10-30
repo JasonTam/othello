@@ -92,9 +92,10 @@ hasMoves = 2;
 %                 break 
             else
                 hasMoves = 2;
-                drawValids(h,actions);
-
+                
+                
                 % Have the player decide on a move to make
+                drawValids(h,actions);
                 try
                     newB = [];
                     while (isempty(newB))

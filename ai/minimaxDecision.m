@@ -1,11 +1,9 @@
 function [ newB ] = minimaxDecision( curBoard, curTok, aiTime, limit )
 %MINIMAX Summary of this function goes here
 %   Detailed explanation goes here
-%     c: children 
 %       with alpha beta pruning
 
-% %  TODO:: pass only the action rather than the entire boards
-    global t_thresh; t_thresh = aiTime/40+0.02;
+    global t_thresh; t_thresh = aiTime/40+0.025;
     global cTok; cTok = curTok;
     alpha = -Inf;
     beta = +Inf;

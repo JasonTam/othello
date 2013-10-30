@@ -15,7 +15,7 @@ both plays having no moves
 end game if neither player has moves to make
 
 
---------------
+-[Done]-------------
 
 if theres only one move, take it
 --------------
