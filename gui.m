@@ -61,14 +61,16 @@ function gui
 
     sideh = sideBar(h);
 
+%% Choose Game Mode
+h.mode = promptMode;
+if (h.mode)
+    h.pTok = -1;
+else
 %% Choose Token Color
-% Hard Code
-%     h.pTok = -1;
-%     h.cTok = 1;
-%     Select
-h.pTok = promptTokColor;
+    h.pTok = promptTokColor;
+end
 h.cTok = -h.pTok;
-    guidata(h.fig,h)
+guidata(h.fig,h)
     
 %% Begin main game
 hasMoves = 2;
@@ -93,36 +95,43 @@ hasMoves = 2;
             else
                 hasMoves = 2;
                 
-                
-                % Have the player decide on a move to make
-                drawValids(h,actions);
-                try
-                    newB = [];
-                    while (isempty(newB))
-                        guidata(h.fig,h);
-                        % Game pauses here to get player input
-                        pCoord = getPMoveCoord(h);
-                        h = guidata(h.fig);     % Udate incase sidebar was used
-                        if (isnan(pCoord))      % Massive workaround for loading while user input
-                            % Need to pre-emptively negate effects later
-                            newB = h.B(:,:,h.iter);
-                            h.turn = -h.turn;
-                            h.iter = h.iter - 1;
-                            break 
-                        end
-                        newB = isValidMove2(h.B(:,:,h.iter),pCoord,h.pTok);
+                if h.mode % if mode is AI vs AI
+                    tic     % Note that tic is global
+                    h.B(:,:,h.iter+1) = aiMove(h.B(:,:,h.iter), h.aiTime, h.pTok);
+                    toc
+                else
+                    % Have the player decide on a move to make
+                    drawValids(h,actions);
+                    try
+                        newB = [];
+                        while (isempty(newB))
+                            guidata(h.fig,h);
+                            % Game pauses here to get player input
+                            pCoord = getPMoveCoord(h);
+                            h = guidata(h.fig);     % Udate incase sidebar was used
+                            if (isnan(pCoord))      % Massive workaround for loading while user input
+                                % Need to pre-emptively negate effects later
+                                newB = h.B(:,:,h.iter);
+                                h.turn = -h.turn;
+                                h.iter = h.iter - 1;
+                                break 
+                            end
+                            newB = isValidMove2(h.B(:,:,h.iter),pCoord,h.pTok);
 
-                        if (isempty(newB))
-                            set(h.status,'String','Not a valid move');
-                        end
-                    end    
+                            if (isempty(newB))
+                                set(h.status,'String','Not a valid move');
+                            end
+                        end    
 
-                catch exception     % User force quit [X]
-                    disp('User exited')
-                    disp(exception.message)
-                    return
+                    catch exception     % User force quit [X]
+                        disp('User exited')
+                        disp(exception.message)
+                        return
+                    end
+                    h.B(:,:,h.iter+1) = newB;
                 end
-                h.B(:,:,h.iter+1) = newB;
+                
+                
                 guidata(h.fig,h);
                 drawGrid(h) % Need this if we highlight valid moves for the player
             end
