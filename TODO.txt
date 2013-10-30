@@ -1,3 +1,19 @@
+
+--------[Forum Post on Mex c99]-----------
+
+http://www.mathworks.com/matlabcentral/answers/8870
+For many years users support problems about compiling C-sources containing C++ comments under Linux, because the automatically created mexopts file enables the -ansi style instead of the modern std=-c99 style for the GCC compiler.
+
+Other compilers accept the C++ comments for a long time: LCC (shipped with Matlab or downloaded from the net), Borland BCC, OpenWatcom, MSVC, Intel ICC, Tiny C (TCC), PCC, ...
+
+Is there any reason not to enable the 12 year old C99 standard in the default mexopts file for the GCC under Linux?
+
+ 
+
+BTW: To solve the problem, you can edit the mexopts file: replace '-ansi' by '-std=c99' or add these flags to the MEX call:
+
+mex -O CFLAGS="\$CFLAGS -std=c99" yourfile.c
+
 --------[optional]-----
 can convert b and tok to char or int32
 before putting into getAllValidint_c
