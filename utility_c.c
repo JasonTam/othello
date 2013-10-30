@@ -98,12 +98,6 @@ static double utility( const mxArray*prhs[]) {
             w[1]*h_mob+
             w[2]*h_cor;
     
-//     mexPrintf("h_par: %f \n",h_par);
-//     mexPrintf("h_mob: %f \n",h_mob);
-//     mexPrintf("h_cor: %f \n",h_cor);
-//     mexPrintf("w[0]: %d \n",w[0]);
-//     mexPrintf("score: %f \n",score);
-    
     return score;
 }
 
