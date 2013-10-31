@@ -24,11 +24,12 @@
 /* Output Arguments */
 #define	SCORE_OUT	plhs[0]
 
-// For debugging
+/* For debugging */
 void DisplayMatrix(char *Name, double *Data, int M, int N) {
     mexPrintf("%s = \n", Name);
-    for(int m = 0; m < M; m++, mexPrintf("\n"))
-        for(int n = 0; n < N; n++)
+    int m,n;
+    for(m = 0; m < M; m++, mexPrintf("\n"))
+        for(n = 0; n < N; n++)
             mexPrintf("%f ", Data[m + M*n]);
 }
 
@@ -42,29 +43,29 @@ static double utility( const mxArray*prhs[]) {
     double score=0;
     double h_par=0, h_mob=0, h_cor=0;
 
-    // Move iteration
-    // Score 
+    /* Move iteration */
+    /* Score */
     for (i=0; i<L*L; i++) {
         iter += abs(b[i]);
         h_par += b[i]; 
     }
     h_par /= (*cTok)*iter;
     
-    // Mobility
+    /* Mobility */
     mxArray *lhs_gAV[2]; 
-    mexCallMATLAB(2, lhs_gAV, 2, (mxArray**)prhs, "getAllValid_c");
+    mexCallMATLAB(2, lhs_gAV, 2, (mxArray**)prhs, "getAllValid");
     int aMax = mxGetM(lhs_gAV[1]);
     
     mxArray *rhs_temp[2];
     rhs_temp[0] = ( mxArray*)prhs[0];
     rhs_temp[1] = mxCreateDoubleScalar(-*cTok);
     
-    mexCallMATLAB(2, lhs_gAV, 2, rhs_temp, "getAllValid_c");
+    mexCallMATLAB(2, lhs_gAV, 2, rhs_temp, "getAllValid");
     int aMin = mxGetM(lhs_gAV[1]);
-    //     mxDestroyArray(rhs_temp);
+    /* mxDestroyArray(rhs_temp); */
     h_mob = ((double)aMax-aMin)/(aMax+aMin);
     
-    // Corners
+    /* Corners */
     int corners[4];
     corners[0] = b[0];
     corners[1] = b[(L-1)];
@@ -81,19 +82,19 @@ static double utility( const mxArray*prhs[]) {
     else
         h_cor = 0;
     
-//             
+/*        
 //             % Stability
 //             h_s = 0;
-//        
+*/        
     
     
-    // Weights
+    /* Weights */
     int w[4];
     w[0] = 10+5000*((L*L-iter)<6);
     w[1] = 50;
     w[2] = 800;
     
-    // Calculate Total Score (Dot prod)
+    /* Calculate Total Score (Dot prod) */
     score = w[0]*h_par+
             w[1]*h_mob+
             w[2]*h_cor;
@@ -106,7 +107,7 @@ void mexFunction( int nlhs, mxArray *plhs[],    /* Input Vars */
 		  int nrhs, const mxArray*prhs[] )      /* Output Vars */
 { 
     double *score;      /* Output Vars */
-//     double *b, *cTok;	/* Input Vars */
+/*     double *b, *cTok;	/* Input Vars */
     size_t m,n; 
 
     /* Check for proper number of arguments */
@@ -119,8 +120,8 @@ void mexFunction( int nlhs, mxArray *plhs[],    /* Input Vars */
     } 
 
     /* Check the dimensions of board_in. */ 
-    m = mxGetM(B_IN);	// Should be L
-    n = mxGetN(B_IN);	// Should be L
+    m = mxGetM(B_IN);	/* Should be L */
+    n = mxGetN(B_IN);	/* Should be L */
     if (!mxIsDouble(B_IN) || mxIsComplex(B_IN) || 
 	(m != L) || (n != L)) { 
 	    mexErrMsgIdAndTxt( "MATLAB:getAllValid:invalid board",
@@ -134,7 +135,7 @@ void mexFunction( int nlhs, mxArray *plhs[],    /* Input Vars */
     score = mxGetPr(SCORE_OUT);
     
     /* Cleanup */
-//     mxDestroyArray(temp);
+/* mxDestroyArray(temp); */
     
     return;
     
