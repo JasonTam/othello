@@ -2,14 +2,12 @@
 % ECE 469 AI - Sable
 % Fall 2013
 
-
 % I had to overwrite the default ginput
 % so that I could specify my own pointer
 % (Note that with the original full crosshair, it would disappear)
 
 % % TODO : 
 % %  stop spamming guidata, only use it when necessary
-% %  Need to make sure a player has valid moves
 % % Need to check end game
 
 
