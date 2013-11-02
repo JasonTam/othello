@@ -77,7 +77,6 @@ hasMoves = 2;
     while (~all(all(h.B(:,:,h.iter))))&&(hasMoves)
         h = guidata(h.fig);
         
-%         fprintf('Outside iter = %d \n',h.iter)
         updateSide(sideh, h.iter);
         
 %% [HUMAN MOVE]
