@@ -35,6 +35,7 @@ function sB = sideBar(h)
         end
         h.iter = sum(abs(B(:)))-3;
         h.B(:,:,h.iter) = B;
+        h.turns(h.iter) = h.turns;
         pB = B; pB(pB==-1)=2;
         updateMsg(h);
         
@@ -51,9 +52,9 @@ function sB = sideBar(h)
         set(sB.sh,'Value',h.iter);
         set(sB.eth_ait,'String',num2str(h.aiTime));
         
-        [~, actions] = getAllValid( h.B(:,:,h.iter), h.turn );
+        [h.candyBoards, h.actions] = getAllValid( h.B(:,:,h.iter),h.turn);
         drawGrid(h);    % Clear the previous higlighted moved
-        drawValids(h,actions);
+        drawValids(h,h.actions);
         drawBoard(h,h.B(:,:,h.iter));
         guidata(h.fig,h) % Save GUI data before returning.
     end
