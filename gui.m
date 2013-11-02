@@ -44,9 +44,11 @@ function gui
 
     drawGrid(h);
 
-    h.B = zeros([h.n h.n h .n^2-4]); % to store all possible past moves
+    h.B = zeros([h.n h.n h.n^2-4]); % to store all possible past moves
+    h.turns = zeros(h.n*h.n,1);     % just for state info
     h.B(:,:,1) = initBoard(h.n);
     h.turn = -1;    % Dark goes first (h.turn contains a tok)
+    h.turns(1) = h.turn;
     h.iter = 1;
     h.indicator = text(1.05,0.5,'Black''s Move');
     h.status = text(1.05,0.6,'');
@@ -84,8 +86,8 @@ hasMoves = 2;
             if (h.turn==1);set(h.indicator,'String','White''s Move');set(h.indicator,'Color',[1 1 1]);end
     
 
-            [candyBoards, actions] = getAllValid( h.B(:,:,h.iter), h.pTok );
-            if isempty(actions)
+            [h.candyBoards, h.actions] = getAllValid( h.B(:,:,h.iter), h.pTok );
+            if isempty(h.actions)
 %                 The turn will swap back to h.cTok later
                 h.iter = h.iter - 1;
                 hasMoves = hasMoves - 1;
@@ -99,14 +101,14 @@ hasMoves = 2;
                     toc
                 else
                     % Have the player decide on a move to make
-                    drawValids(h,actions);
+                    drawValids(h,h.actions);
                     try
                         newB = [];
                         while (isempty(newB))
                             guidata(h.fig,h);
                             % Game pauses here to get player input
                             pCoord = getPMoveCoord(h);
-                            h = guidata(h.fig);     % Udate incase sidebar was used
+                            h = guidata(h.fig);     % Update incase sidebar was used
                             if (isnan(pCoord))      % Massive workaround for loading while user input
                                 % Need to pre-emptively negate effects later
                                 newB = h.B(:,:,h.iter);
@@ -115,7 +117,7 @@ hasMoves = 2;
                                 break 
                             end
                             pCoordAction = pCoord(2)+h.n*(pCoord(1)-1);
-                            newB = candyBoards(:,:,actions==pCoordAction);
+                            newB = h.candyBoards(:,:,h.actions==pCoordAction);
                             
                             if (isempty(newB))
                                 set(h.status,'String','Not a valid move');
@@ -158,6 +160,7 @@ hasMoves = 2;
         
         h.iter = h.iter+1;
         h.turn = -h.turn;
+        h.turns(h.iter) = h.turn;
 
         guidata(h.fig,h);
         drawBoard(h,h.B(:,:,h.iter));

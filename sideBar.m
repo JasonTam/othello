@@ -118,17 +118,18 @@ function sB = sideBar(h)
             h = guidata(h.fig); % Get GUI data.
             slider.val = round(get(hObject,'Value'));
             set(sB.eth_iter,'String',num2str(slider.val));
-            old_iter = h.iter;
+%             old_iter = h.iter;
             h.iter = slider.val;
             
-            d_iter = h.iter - old_iter;
-            h.turn = (-1)^(mod(d_iter,2))*h.turn;
+%             d_iter = h.iter - old_iter;
+%             h.turn = (-1)^(mod(d_iter,2))*h.turn;
+            h.turn = h.turns(h.iter);
             updateMsg(h);
             
             % Show valid moves for that player's turn
-            [~, actions] = getAllValid( h.B(:,:,h.iter), h.turn );
+            [h.candyBoards, h.actions] = getAllValid( h.B(:,:,h.iter),h.turn);
             drawGrid(h);    % Clear the previous highlighted moved
-            drawValids(h,actions);
+            drawValids(h,h.actions);
             drawBoard(h,h.B(:,:,h.iter));
 
             guidata(h.fig,h) % Save GUI data before returning.
@@ -155,16 +156,18 @@ function sB = sideBar(h)
              set(hObject,'String',...
                  'Move # out of bounds');
             end
-            old_iter = h.iter;
+%             old_iter = h.iter;
             h.iter = slider.val;
-            d_iter = h.iter - old_iter;
-            h.turn = (-1)^(mod(d_iter,2))*h.turn;
+%             d_iter = h.iter - old_iter;
+%             h.turn = (-1)^(mod(d_iter,2))*h.turn;
+            h.turn = h.turns(h.iter);
+
             updateMsg(h);
 
             % Show valid moves for that player's turn
-            [~, actions] = getAllValid( h.B(:,:,h.iter), h.turn );
+            [h.candyBoards, h.actions] = getAllValid( h.B(:,:,h.iter),h.turn);
             drawGrid(h);    % Clear the previous higlighted moved
-            drawValids(h,actions);
+            drawValids(h,h.actions);
             drawBoard(h,h.B(:,:,h.iter));
 
             guidata(h.fig,h)
