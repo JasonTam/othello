@@ -163,8 +163,8 @@ hasMoves = 2;
 
         guidata(h.fig,h);
         drawBoard(h,h.B(:,:,h.iter));
-        drawnow
         updateScore
+        drawnow
     end
     
 %% HANDLE ENDGAME    
